@@ -42,4 +42,6 @@ You can see this `ScanSettingBinding` in the "manifests" directory of this repos
 
 ```
 oc apply -k https://github.com/pittar/ocp4-compliance-pbmm/manifests
-``` 
+```
+
+This will kick off the inital scans of the cluster.  This can take some time as it will need to run scans on each cluster node. 

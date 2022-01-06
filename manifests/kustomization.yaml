@@ -5,3 +5,4 @@ namespace: openshift-compliance
 
 resources:
   - ocp4-moderate-scan.yaml
+  - rhcos4-moderate-scan.yaml
