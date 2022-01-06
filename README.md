@@ -15,7 +15,7 @@ The reason these scans are relevant is that the [ITSG-33](https://cyber.gc.ca/en
 The Compliance Operator can be installed in a few different ways:
 
 1. Through OperatorHub: An OpenShift cluster administrator can login to OpenShift, search the integrated "OperatorHub" for "Compliance Operator", then accept all defaults to install the Compliance Operator into the recommended namespace.
-2.[Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) can be used to create a "Policy" that automatically installs the Compliance Operator on all managed OpenShift clusters.
+2. [Red Hat Advanced Cluster Management for Kubernetes](https://www.redhat.com/en/technologies/management/advanced-cluster-management) can be used to create a "Policy" that automatically installs the Compliance Operator on all managed OpenShift clusters.
 3. GitOps: A GitOps approach can be taken in order to use a tool such as [Argo CD (OpenShift GitOps)](https://argo-cd.readthedocs.io/en/stable/) to install the Compliance Operator.
 
 Going through each option in detail is out of scope for this document.  For now, you can either take the 1st approach and install the Compliance Operator through the OpenShift Admin UI, or, if you are already logged in to your cluster as a `cluster-admin`, you can execute the following command to install the Compliance Operator with default settings.
