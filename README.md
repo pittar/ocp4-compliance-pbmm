@@ -36,9 +36,9 @@ This should list a number of available profiles, including the three "moderate" 
 
 ## Scanning the OpenShift Cluster
 
-Now that the Compliance Operator is installed, you need to create a `ScanSettingBinding` that will tell the operator to execute the 3 "moderate" scans on a specific schedule.  For simplity sake, we will bind these profiles to the "default" `ScanSetting`, which runs the scans as soon as it is create, and then each day at 1am GMT.
+Now that the Compliance Operator is installed, you need to create `ScanSettingBinding`s that will tell the operator to execute the 3 "moderate" scans on a specific schedule.  For simplity sake, we will bind these profiles to the "default" `ScanSetting`, which runs the scans as soon as it is create, and then each day at 1am GMT.
 
-You can see this `ScanSettingBinding` in the "manifests" directory of this repository.  To execute this from the CLI, simply run the following command:
+You can see these `ScanSettingBinding`s in the "manifests" directory of this repository.  To execute this from the CLI, simply run the following command:
 
 ```
 oc apply -k https://github.com/pittar/ocp4-compliance-pbmm/manifests
