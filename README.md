@@ -1,6 +1,6 @@
 # OpenShift Compliance Operator - Mapping to ITSG-33
 
-THe OpenShift Compliance Operator offers a number of scanning profiles.  The ones that are most relevant for Canadian Government departments that need to prove compliance of their platforms are:
+THe OpenShift [Compliance Operator](https://docs.openshift.com/container-platform/4.9/security/compliance_operator/compliance-operator-supported-profiles.html) offers a number of scanning profiles.  The ones that are most relevant for Canadian Government departments that need to prove compliance of their platforms are:
 
 * **ocp4-moderate** - NIST 800-53 Moderate-Impact Baseline for Red Hat OpenShift - Platform level
 * **ocp4-moderate-node** - NIST 800-53 Moderate-Impact Baseline for Red Hat OpenShift - Node level
@@ -33,3 +33,7 @@ oc get profiles.compliance -n openshift-compliance
 ``` 
 
 This should list a number of available profiles, including the three "moderate" profiles listed at the top of this document.
+
+## Scanning the OpenShift Cluster
+
+Now that the Compliance Operator is installed, you need to create a `ScanSettingBinding` that will tell the operator 
