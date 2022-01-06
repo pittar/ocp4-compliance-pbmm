@@ -45,3 +45,136 @@ oc apply -k https://github.com/pittar/ocp4-compliance-pbmm/manifests
 ```
 
 This will kick off the inital scans of the cluster.  This can take some time as it will need to run scans on each cluster node. 
+
+## Viewing Scan Results
+
+The best way to view scan results is with the [oc compliance](https://docs.openshift.com/container-platform/4.9/security/compliance_operator/oc-compliance-plug-in-using.html) plugin.  If you are not using Red Hat Enterprise Linux 8, then you may have to build the plugin yourself.  This is pretty straight forward if you have golang installed on your machine (1.15+).
+
+If you have golang installed and want to build the `oc-compliance` plugin yourself, simply clone the project and run make / make install.
+
+```
+git clone https://github.com/openshift/oc-compliance
+cd oc-compliance
+make
+# you may need sudo if you have `oc` installed somewhere besides your home directory
+make install
+```
+
+### Listing Scan Results
+
+You can list the results of the scan, along with PASS/FAIL/MANUAL designation by running the command:
+
+```
+oc get compliancecheckresults -n openshift-compliance  
+```
+
+This will give you a long list of results.  If you want to see an individual result, pick one from the list, sush as `ocp4-moderate-node-worker-file-owner-kubelet-conf` and run:
+
+```
+oc compliance view-result ocp4-moderate-node-worker-file-owner-kubelet-conf -n openshift-compliance
+```
+
+You will see an output that looks like this:
+
+```
++----------------------+---------------------------------------------------+
+|         KEY          |                       VALUE                       |
++----------------------+---------------------------------------------------+
+| Title                | Verify User Who Owns The                          |
+|                      | Kubelet Configuration File                        |
++----------------------+---------------------------------------------------+
+| Status               | PASS                                              |
++----------------------+---------------------------------------------------+
+| Severity             | medium                                            |
++----------------------+---------------------------------------------------+
+| Description          | To properly set the owner of                      |
+|                      | /etc/kubernetes/kubelet.conf ,                    |
+|                      | run the command:                                  |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      | $ sudo chown root                                 |
+|                      | /etc/kubernetes/kubelet.conf                      |
++----------------------+---------------------------------------------------+
+| Rationale            | The kubelet configuration file                    |
+|                      | contains information about the                    |
+|                      | configuration of the OpenShift                    |
+|                      | node that is configured on                        |
+|                      | the system. Protection of this                    |
+|                      | file is critical for OpenShift                    |
+|                      | security.                                         |
++----------------------+---------------------------------------------------+
+| Instructions         | To check the ownership of                         |
+|                      | /etc/kubernetes/kubelet.conf,                     |
+|                      |                                                   |
+|                      | you'll need to log into a node                    |
+|                      | in the cluster.                                   |
+|                      |                                                   |
+|                      | As a user with administrator                      |
+|                      | privileges, log into a node in                    |
+|                      | the relevant pool:                                |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      | $ oc debug node/$NODE_NAME                        |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      | At the sh-4.4# prompt, run:                       |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      | # chroot /host                                    |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      |                                                   |
+|                      | Then,run the command:                             |
+|                      |                                                   |
+|                      | $ ls -lL                                          |
+|                      | /etc/kubernetes/kubelet.conf                      |
+|                      |                                                   |
+|                      | If properly configured, the                       |
+|                      | output should indicate the                        |
+|                      | following owner:                                  |
+|                      |                                                   |
+|                      | root                                              |
++----------------------+---------------------------------------------------+
+| CIS-OCP Controls     | 4.1.6                                             |
++----------------------+---------------------------------------------------+
+| NERC-CIP Controls    | CIP-003-8 R6, CIP-004-6 R3,                       |
+|                      | CIP-007-3 R6.1                                    |
++----------------------+---------------------------------------------------+
+| NIST-800-53 Controls | CM-6, CM-6(1)                                     |
++----------------------+---------------------------------------------------+
+| Available Fix        | No                                                |
++----------------------+---------------------------------------------------+
+| Result Object Name   | ocp4-moderate-node-worker-file-owner-kubelet-conf |
++----------------------+---------------------------------------------------+
+| Rule Object Name     | ocp4-file-owner-kubelet-conf                      |
++----------------------+---------------------------------------------------+
+| Remediation Created  | No                                                |
++----------------------+---------------------------------------------------+
+```
+
+If you'd like to export all of your results, youc an write a simple bash script such as:
+
+```
+#!/bin/bash
+
+ccrs="$(oc get ccr -o custom-columns=NAME:.metadata.name --no-headers=true)"
+for ccr in $ccrs
+do
+    echo "$(oc compliance view-result $ccrs -n openshift-compliance)"
+    echo ""
+done
+```
+
+Then run it and direct the output to a file.
+
+```
+./export-results.sh > full-results.txt
+```
+
+This might take a while to run, so you might want to keep an eye on the file size of your output file to make sure it continues growing.
