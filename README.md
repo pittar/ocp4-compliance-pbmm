@@ -8,7 +8,7 @@ THe OpenShift [Compliance Operator](https://docs.openshift.com/container-platfor
 
 You can see the [NIST-800-53 controls here](https://csrc.nist.gov/Projects/risk-management/sp800-53-controls/release-search#!/800-53).
 
-The reason these scans are relevant is that the [ITSG-33](https://cyber.gc.ca/en/guidance/it-security-risk-management-lifecycle-approach-itsg-33) standard maps almost 1:1 to NIST-800-53.  For this reason, running the above scans on your OpenShift environment can give greatly improve your ability to remediate issues and provide an evidence package to support your authority to operate.
+The reason these scans are relevant is that the [ITSG-33](https://cyber.gc.ca/en/guidance/it-security-risk-management-lifecycle-approach-itsg-33) standard maps almost 1:1 to NIST-800-53.  For this reason, running the above scans on your OpenShift environment can greatly improve your ability to remediate issues and provide an evidence package to support your authority to operate.
 
 ## Installing the Compliance Operator
 
