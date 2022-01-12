@@ -181,43 +181,25 @@ This might take a while to run, so you might want to keep an eye on the file siz
 
 You can also download the raw results from the scan and generate an HTML report using the `oscap` cli.  For simplicity, I've created a simple helper container image that contains `oc`, `oc-compliance`, and `oscap` to demonstrate the process:
 
+1. Start the tools container and enter a bash session:
 ```
-docker run -it --rm -v /Users/pitta/docker/share:/data/output quay.io/pittar/oc-compliance:latest /bin/bash
-
-[root@956ed4eb0fa5 /]# oc login --token=<token> --server=<openshift api endpoint>
-The server uses a certificate signed by an unknown authority.
-You can bypass the certificate check, but any data you send to the server could be intercepted by others.
-Use insecure connections? (y/n): y
-
-Logged into "<openshift api endoinpoint>" as "<username>" using the token provided.
-
-You have access to 66 projects, the list has been suppressed. You can list all projects with 'oc projects'
-
-Using project "default".
-Welcome! See 'oc help' to get started.
-
-[root@956ed4eb0fa5 /]# oc project openshift-compliance
-Now using project "openshift-compliance" on server "<openshift api endoinpoint>".
-
-[root@956ed4eb0fa5 /]# oc compliance fetch-raw scansettingbindings ocp4-moderate-compliance -o /data/output/
-Fetching results for ocp4-moderate-compliance scans: ocp4-moderate-node-worker, ocp4-moderate-node-master, ocp4-moderate
-Fetching raw compliance results for pod 'raw-result-extractor-wvbqm'.Fetching raw compliance results for scan 'ocp4-moderate-node-worker'...........
-The raw compliance results are avaliable in the following directory: /data/output/ocp4-moderate-node-worker
-Fetching raw compliance results for pod 'raw-result-extractor-h6d5f'.Fetching raw compliance results for scan 'ocp4-moderate-node-master'.....
-The raw compliance results are avaliable in the following directory: /data/output/ocp4-moderate-node-master
-Fetching raw compliance results for pod 'raw-result-extractor-wjmjp'.Fetching raw compliance results for scan 'ocp4-moderate'.................
-The raw compliance results are avaliable in the following directory: /data/output/ocp4-moderate
-
-[root@956ed4eb0fa5 /]# oc compliance fetch-raw scansettingbindings rhcos4-moderate-compliance -o /data/output/
-Fetching results for rhcos4-moderate-compliance scans: rhcos4-moderate-worker, rhcos4-moderate-master
-Fetching raw compliance results for pod 'raw-result-extractor-kn5r9'.Fetching raw compliance results for scan 'rhcos4-moderate-worker'.......
-The raw compliance results are avaliable in the following directory: /data/output/rhcos4-moderate-worker
-Fetching raw compliance results for pod 'raw-result-extractor-lskzd'.Fetching raw compliance results for scan 'rhcos4-moderate-master'...........
-The raw compliance results are avaliable in the following directory: /data/output/rhcos4-moderate-master
-
-# Do the following for each bzip2 file that was downloaded.
-[root@956ed4eb0fa5 /]# bunzip2 -c data/output/ocp4-moderate/ocp4-moderate-api-checks-pod.xml.bzip2 > /data/output/ocp4-moderate-api-checks-pod.xml
-[root@956ed4eb0fa5 /]# oscap xccdf generate report /data/output/ocp4-moderate-api-checks-pod.xml > /data/output/ocp4-moderate.html
+docker run -it --rm -v <your local directory>:/data/output quay.io/pittar/oc-compliance:latest /bin/bash
 ```
 
-When you are done, you should have a number of html reports in your local directory (in my case, `/Users/pitta/docker/share`.
+2. Login to your OpenShift cluster (in the container):
+```
+oc login --token=<token> --server=<openshift api endpoint>
+```
+
+3. Fetch the raw compliance results:
+```
+oc compliance fetch-raw scansettingbindings ocp4-moderate-compliance -n openshift-compliance -o /data/output/
+oc compliance fetch-raw scansettingbindings rhcos4-moderate-compliance -n openshift-compliance -o /data/output/
+```
+
+4. Build HTML reports based on the raw results.  They will be in /data/output/html:
+```
+build-reports.sh /data/output
+```
+
+When you are done, you should have a number of html reports in your local directory (in my case, `<your local directory>/html`.
