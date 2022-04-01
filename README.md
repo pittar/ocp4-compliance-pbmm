@@ -179,6 +179,8 @@ Then run it and direct the output to a file.
 
 This might take a while to run, so you might want to keep an eye on the file size of your output file to make sure it continues growing.
 
+## Generating HTML Reports
+
 You can also download the raw results from the scan and generate an HTML report using the `oscap` cli.  For simplicity, I've created a simple helper container image that contains `oc`, `oc-compliance`, and `oscap` to demonstrate the process:
 
 1. Start the tools container and enter a bash session:
