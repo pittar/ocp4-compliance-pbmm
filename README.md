@@ -29,7 +29,7 @@ After a few minutes, the Compliance Operator will be running in a new namespace 
 You will know when the operator is ready as you will now be able to view the different profiles that are available:
 
 ```
-oc get profiles.compliance -n openshift-compliance
+oc get profiles.compliance.openshift.io -n openshift-compliance
 ``` 
 
 This should list a number of available profiles, including the three "moderate" profiles listed at the top of this document.
