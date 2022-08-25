@@ -1,0 +1,79 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: report-builder
+  namespace: report-view
+spec:
+  params:
+    - default: 'ocp4-moderate,rhcos4-moderate'
+      description: >-
+        Comma separated list of ScanSettingBinding names to use to build
+        reports.
+      name: scansettingbinding-names
+      type: string
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/pittar/ocp4-compliance-pbmm.git'
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: deleteExisting
+          value: 'true'
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: >-
+            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:8949bb90e05704aef387e5b8d7143f2dc807c8c693c59193a9bb54d8c0e43b21
+        - name: userHome
+          value: /tekton/home
+      taskRef:
+        kind: ClusterTask
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: reports-workspace
+    - name: compliance-report-builder
+      params:
+        - name: scansettingbinding-names
+          value: $(params.scansettingbinding-names)
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: compliance-report-builder
+      workspaces:
+        - name: reports
+          workspace: reports-workspace
+    - name: buildah
+      params:
+        - name: IMAGE
+          value: >-
+            image-registry.openshift-image-registry.svc:5000/report-view/compliance:latest
+        - name: BUILDER_IMAGE
+          value: >-
+            registry.redhat.io/rhel8/buildah@sha256:23fb7971ea6ac4aaaaa1139473a602df0df19222a3b5a76b551b2b9ddd92e927
+        - name: STORAGE_DRIVER
+          value: vfs
+        - name: DOCKERFILE
+          value: ./compliance-view/Containerfile
+        - name: CONTEXT
+          value: .
+        - name: TLSVERIFY
+          value: 'true'
+        - name: FORMAT
+          value: oci
+      runAfter:
+        - compliance-report-builder
+      taskRef:
+        kind: ClusterTask
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: reports-workspace
+  workspaces:
+    - name: reports-workspace

@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-openshift-compliance-view: "true"
+  name: compliance-reportbuilder-clusterrole
+rules:
+  - apiGroups:
+    - compliance.openshift.io
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - apiGroups:
+    - ''
+    resources:
+      - 'pods'
+    verbs:
+      - 'create'
+      - 'delete'
+  - apiGroups:
+    - ''
+    resources:
+      - 'pods/exec'
+    verbs:
+      - '*'
