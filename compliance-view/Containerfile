@@ -6,7 +6,7 @@ ADD compliance-view/nginx-default-cfg/*.conf "${NGINX_DEFAULT_CONF_PATH}"
 ADD compliance-view/nginx-cfg/*.conf "${NGINX_CONFIGURATION_PATH}"
 ADD index.html .
 ADD html/*.html .
-ADD reports.tar.gz .
+
 
 # Run script uses standard ways to run the application
 CMD nginx -g "daemon off;"

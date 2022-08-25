@@ -52,12 +52,10 @@ spec:
             fi
         done
 
-        tar -zcf reports.tar.gz html
-
-        ls -la
-
-        echo "<li><a href='reports.tar.gz'><h2>Report Archive</h2><p>Download
-        archive of reports.</p></a></li>" >> index.html
+        # tar -zcf reports.tar.gz html
+        # ls -la
+        # echo "<li><a href='reports.tar.gz'><h2>Report Archive</h2><p>Download
+        # archive of reports.</p></a></li>" >> index.html
 
         cat compliance-view/templates/end.html >> index.html
       workingDir: $(workspaces.reports.path)
