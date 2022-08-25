@@ -8,7 +8,8 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: compliance-reportbuilder-clusterrole
+  name: cluster-admin
+  #name: compliance-reportbuilder-clusterrole
 subjects:
   - kind: ServiceAccount
     name: pipeline
