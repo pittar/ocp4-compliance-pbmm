@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   annotations:
     alpha.image.policy.openshift.io/resolve-names: '*'
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"compliance:latest","namespace":"compliance"},"fieldPath":"spec.template.spec.containers[?(@.name==\"compliance\")].image","pause":"false"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"compliance:latest","namespace":"report-view"},"fieldPath":"spec.template.spec.containers[?(@.name==\"compliance\")].image","pause":"false"}]'
   labels:
     app: compliance
     app.kubernetes.io/component: compliance
