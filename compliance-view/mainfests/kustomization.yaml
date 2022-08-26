@@ -10,3 +10,4 @@ resources:
   - viewer-route.yaml
   - report-pvc.yaml
   - role-bindings.yaml
+  - job.yaml
