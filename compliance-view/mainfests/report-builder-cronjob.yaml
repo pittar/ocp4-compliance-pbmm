@@ -70,7 +70,8 @@ spec:
                           echo "Generating $htmlfilename"
                           title=${htmlfilename%.*}
                           profilename=${htmlfilename%-*}
-                          description=$(oc get profile.compliance.openshift.io ocp4-moderate -o jsonpath={.title} -n openshift-compliance)
+                          echo "Creating card for profile $profilename"
+                          description=$(oc get profile.compliance.openshift.io $profilename -o jsonpath={.title} -n openshift-compliance)
                           echo "<li><a href='"$htmlfilename"'><h2>$title</h2><p>$description</p></a></li>" >> /reports/index.html
                       fi
                   done
