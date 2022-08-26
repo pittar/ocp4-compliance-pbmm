@@ -13,6 +13,7 @@ metadata:
     app.openshift.io/runtime: compliance
     app.openshift.io/runtime-namespace: compliance
     app.openshift.io/runtime-version: latest
+    requires-job: compliance
   name: compliance
   namespace: report-view
 spec:
@@ -32,6 +33,7 @@ spec:
       labels:
         app: compliance
         deploymentconfig: compliance
+        requires-job: compliance
     spec:
       containers:
       - image: image-registry.openshift-image-registry.svc:5000/report-view/compliance:latest

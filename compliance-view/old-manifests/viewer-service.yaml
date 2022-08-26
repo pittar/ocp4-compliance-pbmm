@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: compliance
+    app.kubernetes.io/component: compliance
+    app.kubernetes.io/instance: compliance
+    app.kubernetes.io/name: compliance
+    app.kubernetes.io/part-of: compliance-app
+  name: compliance
+  namespace: report-view
+spec:
+  internalTrafficPolicy: Cluster
+  ports:
+  - name: 8080-tcp
+    port: 8080
+  - name: 8443-tcp
+    port: 8443
+  selector:
+    app: compliance
+    deploymentconfig: compliance

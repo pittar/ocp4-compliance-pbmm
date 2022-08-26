@@ -1,0 +1,12 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+resources:
+  - namespace.yaml
+  - reportbuilder-pipeline-workspace-pvc.yaml
+  - reportbuilder-pipeline.yaml
+  - viewer-deployment.yaml
+  - viewer-service.yaml
+  - viewer-route.yaml
+  - report-pvc.yaml
+  - role-bindings.yaml

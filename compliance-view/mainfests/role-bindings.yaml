@@ -1,0 +1,47 @@
+# kind: RoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1
+# metadata:
+#   annotations:
+#     argocd.argoproj.io/sync-options: Prune=false
+#   name: compliance-reportbuilder-complianceview-clusterrolebinding
+#   namespace: openshift-compliance
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: openshift-compliance-view
+# subjects:
+#   - kind: ServiceAccount
+#     name: report-builder
+#     namespace: report-view
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: compliance-reportbuilder-admin-clusterrolebinding
+  namespace: openshift-compliance
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+  - kind: ServiceAccount
+    name: report-builder
+    namespace: report-view
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false
+  name: compliance-reportbuilder-admin-clusterrolebinding
+  namespace: report-view
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
+subjects:
+  - kind: ServiceAccount
+    name: report-builder
+    namespace: report-view
