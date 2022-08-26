@@ -4,7 +4,7 @@ metadata:
   name: compile-compliance-report-cronjob
   namespace: report-view
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "0 5 * * *"
   jobTemplate:
     spec:
       template:
@@ -75,10 +75,9 @@ spec:
                       fi
                   done
 
-
                   tar -zcf /reports/html/reports.tar.gz /reports/html
                   ls -la
-                  echo "<li><a href='reports.tar.gz'><h2>Report Archive</h2><p>Download archive of reports.</p></a></li>" >> /reports/html/index.html
+                  echo "<li><a href='reports.tar.gz'><h2>Report Archive</h2><p>Download archive of reports.</p></a></li>" >> /reports/index.html
 
                   echo $TEMPLATE_END >> /reports/index.html
                   mv /reports/index.html /reports/html/index.html
