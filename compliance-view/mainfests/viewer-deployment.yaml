@@ -35,15 +35,48 @@ spec:
         deploymentconfig: compliance
         requires-job: compliance
     spec:
+      volumes:
+        - name: report-volume
+          persistentVolumeClaim:
+            claimName: report-volume
       containers:
       - image: image-registry.openshift-image-registry.svc:5000/report-view/compliance:latest
         imagePullPolicy: Always
         name: compliance
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+            scheme: HTTP
+          timeoutSeconds: 1
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
         ports:
         - containerPort: 8080
           protocol: TCP
         - containerPort: 8443
           protocol: TCP
+        volumeMounts:
+          - name: report-volume
+            mountPath: /opt/app-root/src
+            subPath: html
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst

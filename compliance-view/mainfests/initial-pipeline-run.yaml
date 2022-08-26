@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: report-builder-pipeline-initial-run
+  namespace: report-view
+spec:
+  pipelineRef:
+    name: report-builder
+  serviceAccountName: pipeline
+  timeout: 10m0s
+  workspaces:
+    - name: reports-workspace
+      persistentVolumeClaim:
+        claimName: pipeline-workspace

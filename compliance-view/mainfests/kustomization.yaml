@@ -11,4 +11,5 @@ resources:
   - report-builder-sa.yaml
   - report-pvc.yaml
   - role-bindings.yaml
-  - job.yaml
+  - report-builder-cronjob.yaml
+  - initial-pipeline-run.yaml
