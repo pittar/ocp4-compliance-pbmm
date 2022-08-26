@@ -8,6 +8,7 @@ resources:
   - viewer-deployment.yaml
   - viewer-service.yaml
   - viewer-route.yaml
+  - report-builder-sa.yaml
   - report-pvc.yaml
   - role-bindings.yaml
   - job.yaml
