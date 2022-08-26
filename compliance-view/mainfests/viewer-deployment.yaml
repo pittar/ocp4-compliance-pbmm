@@ -40,7 +40,7 @@ spec:
           persistentVolumeClaim:
             claimName: report-volume
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/report-view/compliance:latest
+      - image: quay.io/pittar/compliance-report-viewer:latest
         imagePullPolicy: Always
         name: compliance
         resources:
