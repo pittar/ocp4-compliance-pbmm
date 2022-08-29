@@ -46,9 +46,27 @@ oc apply -k https://github.com/pittar/ocp4-compliance-pbmm/manifests
 
 This will kick off the inital scans of the cluster.  This can take some time as it will need to run scans on each cluster node. 
 
+## Viewing Scan Results - Easy Way for Demos
+
+The easiest way to view your scan results is to deploy the "compliance view" app that I created for this purpose.  This is a basic NGiNX image that mounts a shared PVC that will have report content.  There is also a `CronJob` that extracts the scan results and builds OpenSCAP HTML reports that are stored in the shared PVC.  This is a convenient way to display reports for demos.  The CronJob is set to run at 5am UTC every day, so the reports should continually be fresh.
+
+To deploy the application and CronJob:
+
+```
+oc apply -k https://github.com/pittar/ocp4-compliance-pbmm/compliance-view/mainfests
+```
+
+Since the CronJob won't run until 5am UTC, you need to kick off the first run manually:
+
+```
+oc create job --from=cronjob/compile-compliance-report-cronjob initial-reports -n report-view
+```
+
+The CronJob will start by scaling the NGiNX Deployment to 0, then it will extract/generate reports (this take a few minutes), and finally scale the NGiNX deployment back to 1.  At this point, you can access the route and view the reports.
+
 ## Viewing Scan Results
 
-The best way to view scan results is with the [oc compliance](https://docs.openshift.com/container-platform/4.9/security/compliance_operator/oc-compliance-plug-in-using.html) plugin.  If you are not using Red Hat Enterprise Linux 8, then you may have to build the plugin yourself.  This is pretty straight forward if you have golang installed on your machine (1.15+).
+Another way to view scan results is with the [oc compliance](https://docs.openshift.com/container-platform/4.9/security/compliance_operator/oc-compliance-plug-in-using.html) plugin.  If you are not using Red Hat Enterprise Linux 8, then you may have to build the plugin yourself.  This is pretty straight forward if you have golang installed on your machine (1.15+).
 
 If you have golang installed and want to build the `oc-compliance` plugin yourself, simply clone the project and run make / make install.
 
