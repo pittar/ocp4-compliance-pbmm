@@ -2,6 +2,6 @@ apiVersion: v1
 kind: Namespace
 metadata:
   annotations:
-    openshift.io/description: "Compliance report viewer."
-    openshift.io/display-name: "Compliance Viewer"
+    openshift.io/description: Compliance report viewer.
+    openshift.io/display-name: Compliance Viewer
   name: report-view
